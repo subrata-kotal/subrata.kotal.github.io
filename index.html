@@ -1,10 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Egg Booking</title>
+  <meta charset="UTF-8">
+  <title>Egg Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff8e1, #ffe0b2);
+      text-align: center;
+    }
+
+    header {
+      background: #ff9800;
+      color: white;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .price {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .highlight {
+      color: #ff5722;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 15px;
+      background: #333;
+      color: white;
+      font-size: 14px;
+    }
+
+    iframe {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
 </head>
-<body style="text-align:center;font-family:Arial;margin-top:50px;">
-<h1>🥚 Egg Booking</h1>
-<p>Welcome to Egg Booking System</p>
+
+<body>
+
+<header>
+  🥚 Egg Booking
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>📌 Today's Price</h2>
+    <div class="price">Full Boil: <span class="highlight">₹10</span></div>
+    <div class="price">Half Boil: <span class="highlight">₹8</span></div>
+  </div>
+
+  <div class="card">
+    <h2>📝 Book Your Egg</h2>
+
+    <!-- 🔽 এখানে তোমার Google Form link বসাবে -->
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4ZNykYS0-eLylCa6zW8y9VpJOR-zrPWqrNcepSQNWnumbNQ/viewform?usp=dialog" height="600"></iframe>
+
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Egg Booking | Managed by Subrata
+</footer>
+
 </body>
 </html>
