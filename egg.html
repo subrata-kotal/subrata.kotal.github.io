@@ -113,76 +113,28 @@ margin-top:20px;
 </div>
 
 <script>
+function placeOrder() {
 
-// 🔴 এখানে তোমার Apps Script Web App URL বসাবে
-const scriptURL = "https://script.google.com/macros/s/AKfycbw8dwv7cASMyN96bXeiWsGIYDtUEc0aBkgtoBKv3Z54sxivH6gKS26K2yonS8rAuQ4c/exec";
+  let name = document.getElementById("name").value;
+  let qty = document.getElementById("qty").value;
+  let price = 8; // Egg example
+  let total = qty * price;
 
-let fullPrice = 0;
-let halfPrice = 0;
-let closingTime = "";
+  fetch("https://script.google.com/macros/s/AKfycbwPPvqey8CCAyvaNMKsVmvvC1oqKVgcEapadKiXIB0bw6GWskT3vY9z6rUQQBpGh1g/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      product: "Egg",
+      name: name,
+      quantity: qty,
+      total: total
+    })
+  })
+  .then(res => res.text())
+  .then(data => {
+    alert("Order Saved Successfully!");
+  });
 
-fetch(scriptURL)
-.then(res => res.json())
-.then(data => {
-fullPrice = data.full;
-halfPrice = data.half;
-closingTime = data.closing;
-
-document.getElementById("fullPrice").innerText = fullPrice;
-document.getElementById("halfPrice").innerText = halfPrice;
-
-startTimer();
-});
-
-function startTimer(){
-let now = new Date();
-let today = now.toISOString().split('T')[0];
-let close = new Date(today + "T" + closingTime);
-
-setInterval(function(){
-let diff = close - new Date();
-if(diff <= 0){
-document.getElementById("timer").innerText = "Closed";
-return;
 }
-let hours = Math.floor(diff/1000/60/60);
-let mins = Math.floor((diff/1000/60)%60);
-let secs = Math.floor((diff/1000)%60);
-document.getElementById("timer").innerText =
-hours+"h "+mins+"m "+secs+"s";
-},1000);
-}
-
-function submitOrder(){
-const name = document.getElementById("name").value;
-const mobile = document.getElementById("mobile").value;
-const fullQty = parseInt(document.getElementById("fullQty").value) || 0;
-const halfQty = parseInt(document.getElementById("halfQty").value) || 0;
-
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify({
-name:name,
-mobile:mobile,
-fullQty:fullQty,
-halfQty:halfQty,
-fullPrice:fullPrice,
-halfPrice:halfPrice
-})
-})
-.then(res=>res.text())
-.then(()=>alert("Order Success!"));
-}
-
-function adminLogin(){
-let pass = prompt("Enter Admin Password");
-if(pass=="1234"){
-document.getElementById("adminPanel").style.display="block";
-}else{
-alert("Wrong Password");
-}
-}
-
 </script>
 
 </body>
