@@ -113,19 +113,33 @@ margin-top:20px;
 </div>
 
 <script>
-function placeOrder() {
+
+const fullPrice = 8;
+const halfPrice = 10;
+
+document.getElementById("fullPrice").innerText = fullPrice;
+document.getElementById("halfPrice").innerText = halfPrice;
+
+function submitOrder() {
 
   let name = document.getElementById("name").value;
-  let qty = document.getElementById("qty").value;
-  let price = 8; // Egg example
-  let total = qty * price;
+  let fullQty = parseInt(document.getElementById("fullQty").value) || 0;
+  let halfQty = parseInt(document.getElementById("halfQty").value) || 0;
 
-  fetch("https://script.google.com/macros/s/AKfycbwPPvqey8CCAyvaNMKsVmvvC1oqKVgcEapadKiXIB0bw6GWskT3vY9z6rUQQBpGh1g/exec", {
+  if(name == ""){
+    alert("Please enter your name");
+    return;
+  }
+
+  let totalQty = fullQty + halfQty;
+  let total = (fullQty * fullPrice) + (halfQty * halfPrice);
+
+  fetch("https://script.google.com/macros/s/AKfycbzm3dahRGrWiunzoEruMqIrMNhvJSOwnaFxRoGhCkVB-d2yO5y7XrLqBz11uqw0ndo/exec", {
     method: "POST",
     body: JSON.stringify({
       product: "Egg",
       name: name,
-      quantity: qty,
+      quantity: totalQty,
       total: total
     })
   })
@@ -135,6 +149,7 @@ function placeOrder() {
   });
 
 }
+
 </script>
 
 </body>
