@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Egg Booking - SK Online</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+text-align:center;
+}
+
+header{
+background:#ff9800;
+color:white;
+padding:20px;
+font-size:22px;
+}
+
+.container{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+max-width:400px;
+margin-left:auto;
+margin-right:auto;
+}
+
+input{
+padding:10px;
+margin:8px 0;
+width:90%;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+padding:10px 20px;
+background:#ff5722;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#e64a19;
+}
+
+.price{
+font-size:18px;
+margin:8px;
+}
+
+.timer{
+font-weight:bold;
+color:red;
+}
+
+.admin{
+display:none;
+margin-top:15px;
+background:#eee;
+padding:10px;
+border-radius:8px;
+}
+
+a{
+text-decoration:none;
+display:block;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🥚 Egg Booking
+</header>
+
+<div class="container">
+
+<h3>Live Price</h3>
+<div class="price">Full Boil: ₹ <span id="fullPrice"></span></div>
+<div class="price">Half Boil: ₹ <span id="halfPrice"></span></div>
+<div class="timer">Booking closes in: <span id="timer"></span></div>
+
+<hr>
+
+<h3>Place Order</h3>
+
+<input type="text" id="name" placeholder="Your Name">
+<input type="text" id="mobile" placeholder="Mobile Number">
+<input type="number" id="fullQty" placeholder="Full Quantity">
+<input type="number" id="halfQty" placeholder="Half Quantity">
+
+<button onclick="submitOrder()">Book Now</button>
+
+<div class="admin" id="adminPanel">
+<h4>Admin Panel</h4>
+<p>Today's Total: ₹ <span id="todayTotal">0</span></p>
+</div>
+
+<button onclick="adminLogin()">Admin Login</button>
+
+<a href="index.html">⬅ Back to Home</a>
+
+</div>
+
+<script>
+
+// 🔴 এখানে তোমার Apps Script Web App URL বসাবে
+const scriptURL = "https://script.google.com/macros/s/AKfycbwvFeZBKlYyyEx5EPDGKOwHPDvJAPzxJSK5KbbbqsutOFRsO1GVofA-embk-DareLvE/exec";
+
+let fullPrice = 0;
+let halfPrice = 0;
+let closingTime = "";
+
+fetch(scriptURL)
+.then(res => res.json())
+.then(data => {
+fullPrice = data.full;
+halfPrice = data.half;
+closingTime = data.closing;
+
+document.getElementById("fullPrice").innerText = fullPrice;
+document.getElementById("halfPrice").innerText = halfPrice;
+
+startTimer();
+});
+
+function startTimer(){
+let now = new Date();
+let today = now.toISOString().split('T')[0];
+let close = new Date(today + "T" + closingTime);
+
+setInterval(function(){
+let diff = close - new Date();
+if(diff <= 0){
+document.getElementById("timer").innerText = "Closed";
+return;
+}
+let hours = Math.floor(diff/1000/60/60);
+let mins = Math.floor((diff/1000/60)%60);
+let secs = Math.floor((diff/1000)%60);
+document.getElementById("timer").innerText =
+hours+"h "+mins+"m "+secs+"s";
+},1000);
+}
+
+function submitOrder(){
+const name = document.getElementById("name").value;
+const mobile = document.getElementById("mobile").value;
+const fullQty = parseInt(document.getElementById("fullQty").value) || 0;
+const halfQty = parseInt(document.getElementById("halfQty").value) || 0;
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+name:name,
+mobile:mobile,
+fullQty:fullQty,
+halfQty:halfQty,
+fullPrice:fullPrice,
+halfPrice:halfPrice
+})
+})
+.then(res=>res.text())
+.then(()=>alert("Order Success!"));
+}
+
+function adminLogin(){
+let pass = prompt("Enter Admin Password");
+if(pass=="1234"){
+document.getElementById("adminPanel").style.display="block";
+}else{
+alert("Wrong Password");
+}
+}
+
+</script>
+
+</body>
+</html>
